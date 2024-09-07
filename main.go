@@ -100,7 +100,7 @@ func _main() error {
 		if err != nil {
 			return nil
 		}
-		if m, _ := ignore.Matches(relFilePath); m {
+		if m, _ := ignore.MatchesOrParentMatches(relFilePath); m {
 			if verbose {
 				fmt.Fprintln(os.Stderr, "IGNORE", relFilePath)
 			}
