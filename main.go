@@ -21,8 +21,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
 	"github.com/moby/patternmatcher"
+	"github.com/moby/patternmatcher/ignorefile"
 )
 
 func main() {
@@ -78,7 +78,7 @@ func _main() error {
 	// https://github.com/moby/buildkit/releases/tag/dockerfile%2F1.1.0
 	for _, dockerIgnore = range []string{dockerFile + ".dockerignore", ".dockerignore"} {
 		if f, err := os.Open(dockerIgnore); err == nil {
-			if ignorePatterns, err = dockerignore.ReadAll(f); err != nil {
+			if ignorePatterns, err = ignorefile.ReadAll(f); err != nil {
 				return fmt.Errorf(dockerIgnore+": %w", err)
 			}
 			break
