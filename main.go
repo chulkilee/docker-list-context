@@ -37,7 +37,9 @@ func main() {
 func _main() error {
 	var verbose bool
 	var dockerFile string
+	var skipDir bool
 	flag.BoolVar(&verbose, "v", false, "verbose mode: show ignored files on stderr")
+	flag.BoolVar(&skipDir, "skip-dir", false, "skip directory entries")
 	flag.StringVar(&dockerFile, "f", "", "name of the `Dockerfile` to derive the dockerignore file")
 	flag.StringVar(&dockerFile, "file", "", "name of the `Dockerfile` to derive the dockerignore file (also --file)")
 	flag.Usage = func() {
@@ -98,6 +100,9 @@ func _main() error {
 		}
 		relFilePath, err := filepath.Rel(".", filePath)
 		if err != nil {
+			return nil
+		}
+		if f.IsDir() && skipDir {
 			return nil
 		}
 		if m, _ := ignore.MatchesOrParentMatches(relFilePath); m {
